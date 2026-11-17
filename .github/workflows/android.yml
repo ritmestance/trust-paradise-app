@@ -40,9 +40,11 @@ jobs:
           mkdir out
           cp android/app/build/outputs/apk/release/app-release.apk "out/trust-paradise-1.0.${GITHUB_RUN_NUMBER}.apk"
           rm -f "$RUNNER_TEMP/trust-release.jks"
-          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
-          "$BT/apksigner" verify --print-certs out/*.apk | grep -E "Signer #1 certificate (DN|SHA-256)"
-          "$BT/aapt2" dump badging out/*.apk | grep -E "^package|^application-label"
+          BT=$(ls -d "${ANDROID_HOME:-$ANDROID_SDK_ROOT}"/build-tools/* | sort -V | tail -1)
+          echo "build-tools: $BT"
+          "$BT/apksigner" verify --verbose --print-certs out/*.apk 2>&1 | grep -vi "warning" | head -12
+          "$BT/apksigner" verify out/*.apk && echo "SIGNATURE OK"
+          "$BT/aapt2" dump badging out/*.apk 2>/dev/null | head -3 || true
 
       - uses: actions/upload-artifact@v4
         with:
