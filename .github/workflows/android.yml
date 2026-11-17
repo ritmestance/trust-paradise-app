@@ -1,0 +1,49 @@
+# Builds the Android management app (APK). Runs when the android/ folder changes,
+# or by hand: GitHub → Actions → "Android app" → Run workflow.
+name: Android app
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["android/**", ".github/workflows/android.yml"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '17' }
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+        with: { gradle-version: '8.9' }
+
+      - name: Put the signing key in place
+        env:
+          KEY_B64: ${{ secrets.TP_KEYSTORE_B64 }}
+        run: |
+          if [ -z "$KEY_B64" ]; then
+            echo "::error::The secret TP_KEYSTORE_B64 is missing. Add it under Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+          echo "$KEY_B64" | base64 -d > "$RUNNER_TEMP/trust-release.jks"
+          echo "TP_KEYSTORE=$RUNNER_TEMP/trust-release.jks" >> "$GITHUB_ENV"
+
+      - name: Build
+        env:
+          TP_KEYSTORE_PASSWORD: ${{ secrets.TP_KEYSTORE_PASSWORD }}
+        run: gradle -p android assembleRelease --no-daemon
+
+      - name: Name the file
+        run: |
+          mkdir out
+          cp android/app/build/outputs/apk/release/app-release.apk "out/trust-paradise-1.0.${GITHUB_RUN_NUMBER}.apk"
+          rm -f "$RUNNER_TEMP/trust-release.jks"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: trust-paradise-app-1.0.${{ github.run_number }}
+          path: out/*.apk
+          retention-days: 30
