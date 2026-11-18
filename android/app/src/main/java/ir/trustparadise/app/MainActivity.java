@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         web = new WebView(this);
+        web.setBackgroundColor(0xFF150E0A);   // no white flash before the first page draws
         setContentView(web);
 
         WebSettings s = web.getSettings();
@@ -197,7 +198,7 @@ public class MainActivity extends Activity {
 
     static final String OFFLINE_PAGE =
         "<!doctype html><html lang='fa' dir='rtl'><meta name='viewport' content='width=device-width,initial-scale=1'>"
-        + "<body style='font-family:sans-serif;background:#fbf8f2;color:#2a211a;display:grid;place-items:center;min-height:90vh;margin:0;text-align:center;padding:20px'>"
-        + "<div><h2>اینترنت وصل نیست</h2><p>برای اولین بار باز کردن برنامه به اینترنت نیاز است.<br>بعد از یک بار ورود، صفحه‌هایی که باز کرده‌اید بدون اینترنت هم دیده می‌شوند.</p>"
-        + "<p><a href='" + HOME + "' style='display:inline-block;padding:10px 22px;border-radius:10px;background:#6b4a2b;color:#fff;text-decoration:none'>دوباره امتحان کن</a></p></div></body></html>";
+        + "<body style='font-family:sans-serif;background:radial-gradient(500px 360px at 50% 35%,rgba(214,168,101,.12),transparent 70%),#150e0a;color:#eee2cf;display:grid;place-items:center;min-height:90vh;margin:0;text-align:center;padding:20px;line-height:1.9'>"
+        + "<div style='max-width:340px'><h2 style='font-weight:500;color:#f6ecdc'>اینترنت وصل نیست</h2><p style='color:#a39079;font-size:15px'>برای اولین بار باز کردن برنامه به اینترنت نیاز است.<br>بعد از یک بار ورود، صفحه‌هایی که باز کرده‌اید بدون اینترنت هم دیده می‌شوند.</p>"
+        + "<p><a href='" + HOME + "' style='display:inline-block;padding:10px 24px;border-radius:10px;background:linear-gradient(135deg,#e0b574,#a8722f);color:#1a110a;text-decoration:none;font-weight:bold'>دوباره امتحان کن</a></p></div></body></html>";
 }

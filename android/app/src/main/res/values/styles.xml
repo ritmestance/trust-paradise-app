@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:windowBackground">@color/ivory</item>
-        <item name="android:statusBarColor">@color/ivory</item>
-        <item name="android:navigationBarColor">@color/ivory</item>
-        <item name="android:windowLightStatusBar">true</item>
+    <style name="AppTheme" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/night</item>
+        <item name="android:statusBarColor">@color/night</item>
+        <item name="android:navigationBarColor">@color/night</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorAccent">@color/gold</item>
     </style>
-    <color name="ivory">#FBF8F2</color>
+    <color name="night">#150E0A</color>
+    <color name="gold">#C99A55</color>
 </resources>
